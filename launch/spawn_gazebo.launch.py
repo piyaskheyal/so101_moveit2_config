@@ -25,7 +25,7 @@ def generate_launch_description():
         arguments=[
             '-name', robotXacroName,
             '-topic', 'robot_description',
-            '-z', '0.1',
+            '-z', '0.0',
         ],
         output='screen'
     )
