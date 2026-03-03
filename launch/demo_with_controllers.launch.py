@@ -29,20 +29,20 @@ def generate_launch_description():
     )
 
     moveit_config = (
-        MoveItConfigsBuilder("moveit_resources_panda")
+        MoveItConfigsBuilder(robot_name="so101_new_calib", package_name="so101_moveit2_config")
         .robot_description(
-            file_path="config/panda.urdf.xacro",
+            file_path="config/so101_new_calib.urdf.xacro",
             mappings={
                 "ros2_control_hardware_type": LaunchConfiguration(
                     "ros2_control_hardware_type"
                 )
             },
         )
-        .robot_description_semantic(file_path="config/panda.srdf")
+        .robot_description_semantic(file_path="config/so101_new_calib.srdf")
         .planning_scene_monitor(
             publish_robot_description=True, publish_robot_description_semantic=True
         )
-        .trajectory_execution(file_path="config/gripper_moveit_controllers.yaml")
+        .trajectory_execution(file_path="config/moveit_controllers.yaml")
         .planning_pipelines(
             pipelines=["ompl", "chomp", "pilz_industrial_motion_planner", "stomp"]
         )
@@ -61,7 +61,7 @@ def generate_launch_description():
     # RViz
     rviz_base = LaunchConfiguration("rviz_config")
     rviz_config = PathJoinSubstitution(
-        [FindPackageShare("moveit_resources_panda_moveit_config"), "launch", rviz_base]
+        [FindPackageShare("so101_moveit2_config"), "launch", rviz_base]
     )
     rviz_node = Node(
         package="rviz2",
@@ -98,7 +98,7 @@ def generate_launch_description():
 
     # ros2_control using FakeSystem as hardware
     ros2_controllers_path = os.path.join(
-        get_package_share_directory("moveit_resources_panda_moveit_config"),
+        get_package_share_directory("so101_moveit2_config"),
         "config",
         "ros2_controllers.yaml",
     )
