@@ -59,9 +59,8 @@ def generate_launch_description():
     )
 
     # RViz
-    rviz_base = LaunchConfiguration("rviz_config")
     rviz_config = PathJoinSubstitution(
-        [FindPackageShare("so101_moveit2_config"), "launch", rviz_base]
+        [FindPackageShare("so101_moveit2_config"), "config", "moveit.rviz"]
     )
     rviz_node = Node(
         package="rviz2",
