@@ -140,6 +140,23 @@ def generate_launch_description():
             on_exit=[so101_gripper_controller_spawner],
         )
     )
+    
+    bridge_params=os.path.join(
+        get_package_share_directory(namePackage),
+        'parameters',
+        'bridge_param.yaml'
+    )
+
+    start_gazebo_ros_bridge_cmd=Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=[
+            '--ros-args',
+            '-p',
+            f'config_file:={bridge_params}',
+        ],
+        output='screen'
+    )
 
     return LaunchDescription(
         [
@@ -155,5 +172,6 @@ def generate_launch_description():
             delay_joint_state_broadcaster_spawner,
             delay_so101_arm_controller_spawner,
             delay_so101_gripper_controller_spawner,
+            start_gazebo_ros_bridge_cmd,
         ]
     )
