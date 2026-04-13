@@ -12,7 +12,7 @@ from moveit_configs_utils import MoveItConfigsBuilder
 def generate_launch_description():
 
     # Command-line arguments
-    param_sim_time = {"use_sim_time": False}
+    param_sim_time = {"use_sim_time": True}
 
     rviz_config_arg = DeclareLaunchArgument(
         "rviz_config",
@@ -26,7 +26,7 @@ def generate_launch_description():
 
     ros2_control_hardware_type = DeclareLaunchArgument(
         "ros2_control_hardware_type",
-        default_value="mock_components",
+        default_value="isaac",
         description="ROS 2 control hardware interface type to use for the launch file -- possible values: [mock_components, isaac]",
     )
 
