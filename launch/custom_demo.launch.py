@@ -89,7 +89,7 @@ def generate_launch_description():
         executable="static_transform_publisher",
         name="static_transform_publisher",
         output="log",
-        arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "panda_link0"],
+        arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "root"],
     )
 
     # Publish TF
