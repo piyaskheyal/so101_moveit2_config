@@ -31,3 +31,8 @@ arm_trajectory_controller:
 gripper_action_controller:
   ros__parameters:
     joint: gripper
+    action_monitor_rate: 20.0
+    goal_tolerance: 0.01
+    max_effort: 0.0
+    allow_stalled: false
+    joint: gripper

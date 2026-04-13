@@ -12,7 +12,7 @@ from moveit_configs_utils import MoveItConfigsBuilder
 def generate_launch_description():
 
     # Command-line arguments
-    param_sim_time = {"use_sim_time": True}
+    param_sim_time = {"use_sim_time": False}
 
     rviz_config_arg = DeclareLaunchArgument(
         "rviz_config",
@@ -26,21 +26,21 @@ def generate_launch_description():
 
     ros2_control_hardware_type = DeclareLaunchArgument(
         "ros2_control_hardware_type",
-        default_value="isaac",
+        default_value="mock_components",
         description="ROS 2 control hardware interface type to use for the launch file -- possible values: [mock_components, isaac]",
     )
 
     moveit_config = (
-        MoveItConfigsBuilder("moveit_resources_panda")
+        MoveItConfigsBuilder(robot_name="so101_new_calib", package_name="so101_moveit2_config")
         .robot_description(
-            file_path="config/panda.urdf.xacro",
+            file_path="config/so101_new_calib.urdf.xacro",
             mappings={
                 "ros2_control_hardware_type": LaunchConfiguration(
                     "ros2_control_hardware_type"
                 )
             },
         )
-        .robot_description_semantic(file_path="config/panda.srdf")
+        .robot_description_semantic(file_path="config/so101_new_calib.srdf")
         .planning_scene_monitor(
             publish_robot_description=True, publish_robot_description_semantic=True
         )
@@ -65,7 +65,7 @@ def generate_launch_description():
     # RViz
     rviz_base = LaunchConfiguration("rviz_config")
     rviz_config = PathJoinSubstitution(
-        [FindPackageShare("moveit_resources_panda_moveit_config"), "launch", rviz_base]
+        [FindPackageShare("so101_moveit2_config"), "config", rviz_base]
     )
     rviz_node = Node(
         package="rviz2",
@@ -105,7 +105,7 @@ def generate_launch_description():
 
     # ros2_control using FakeSystem as hardware
     ros2_controllers_path = os.path.join(
-        get_package_share_directory("moveit_resources_panda_moveit_config"),
+        get_package_share_directory("so101_moveit2_config"),
         "config",
         "ros2_controllers.yaml",
     )
@@ -132,16 +132,16 @@ def generate_launch_description():
         ],
     )
 
-    panda_arm_controller_spawner = Node(
+    so101_arm_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["panda_arm_controller", "-c", "/controller_manager"],
+        arguments=["arm_trajectory_controller", "-c", "/controller_manager"],
     )
 
-    panda_hand_controller_spawner = Node(
+    so101_gripper_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["panda_hand_controller", "-c", "/controller_manager"],
+        arguments=["gripper_action_controller", "-c", "/controller_manager"],
     )
 
     # Warehouse mongodb server
@@ -169,8 +169,8 @@ def generate_launch_description():
             move_group_node,
             ros2_control_node,
             joint_state_broadcaster_spawner,
-            panda_arm_controller_spawner,
-            panda_hand_controller_spawner,
+            so101_arm_controller_spawner,
+            so101_gripper_controller_spawner,
             mongodb_server_node,
         ]
     )
