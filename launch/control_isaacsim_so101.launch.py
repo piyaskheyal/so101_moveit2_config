@@ -26,7 +26,7 @@ def generate_launch_description():
 
     ros2_control_hardware_type = DeclareLaunchArgument(
         "ros2_control_hardware_type",
-        default_value="real",
+        default_value="isaac",
         description="ROS 2 control hardware interface type to use for the launch file -- possible values: [mock_components, isaac, real]",
     )
 
@@ -158,14 +158,6 @@ def generate_launch_description():
         condition=IfCondition(db_config),
     )
 
-    # Real Hardware Python Interface
-    feetech_hardware_node = Node(
-        package="arm_hardware_interface",
-        executable="hardware_interface",
-        name="arm_hardware_interface",
-        output="screen",
-    )
-
     return LaunchDescription(
         [
             rviz_config_arg,
@@ -180,6 +172,5 @@ def generate_launch_description():
             so101_arm_controller_spawner,
             so101_gripper_controller_spawner,
             mongodb_server_node,
-            feetech_hardware_node,
         ]
     )
