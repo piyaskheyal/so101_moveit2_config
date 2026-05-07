@@ -12,7 +12,7 @@ from moveit_configs_utils import MoveItConfigsBuilder
 def generate_launch_description():
 
     # Command-line arguments
-    param_sim_time = {"use_sim_time": False}
+    param_sim_time = {"use_sim_time": True}
 
     rviz_config_arg = DeclareLaunchArgument(
         "rviz_config",
